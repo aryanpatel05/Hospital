@@ -239,7 +239,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/patient-history",
+        "https://hospital-qn5w.onrender.com/api/patient-history",
         formData
       );
       console.log("Patient data saved:", res.data);

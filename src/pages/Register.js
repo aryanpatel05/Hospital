@@ -22,7 +22,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/register", formData)
+      .post("https://hospital-qn5w.onrender.com/api/register", formData)
       .then((res) => {
         // Assuming the response returns the patient ID after successful registration
         navigate(`/patient/${res.data.patientId}`);

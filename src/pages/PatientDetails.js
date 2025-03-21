@@ -20,7 +20,7 @@ const PatientDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/patient/${id}`)
+      .get(`https://hospital-qn5w.onrender.com/api/patient/${id}`)
       .then((res) => {
         setPatient(res.data);
         setLoading(false);

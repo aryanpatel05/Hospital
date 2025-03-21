@@ -29,7 +29,7 @@ const FetchedDataPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/patients")
+      .get("https://hospital-qn5w.onrender.com/")
       .then((res) => {
         console.log("Patients fetched:", res.data);
         setPatients(res.data);
