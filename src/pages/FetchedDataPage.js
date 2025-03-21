@@ -26,20 +26,24 @@ const FetchedDataPage = () => {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
   useEffect(() => {
-    axios
-      .get("https://hospital-qn5w.onrender.com/api/patients")
-      .then((res) => {
-        console.log("Patients fetched:", res.data);
-        setPatients(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching patients:", err);
-        setError("Error fetching patients.");
-        setLoading(false);
-      });
+    const fetchPatients = () => {
+      axios
+        .get("https://hospital-qn5w.onrender.com/api/patients")
+        .then((res) => {
+          setPatients(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError("Error fetching patients.");
+          setLoading(false);
+        });
+    };
+
+    fetchPatients();
+    const intervalId = setInterval(fetchPatients, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   // Filter patients based on search query (case-insensitive)
