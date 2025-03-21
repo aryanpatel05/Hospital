@@ -28,7 +28,6 @@ const FetchedDataPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchPatients = () => {
-      setLoading(true);
       axios
         .get("https://hospital-qn5w.onrender.com/api/patients")
         .then((res) => {
@@ -41,15 +40,8 @@ const FetchedDataPage = () => {
         });
     };
 
-    useEffect(() => {
-      fetchPatients();
-    }, []);
-
-    // In your JSX, add a button:
-    <Button onClick={fetchPatients}>Refresh Patients List</Button>;
-
-    // fetchPatients();
-    // const intervalId = setInterval(fetchPatients, 30000); // Refresh every 30 seconds
+    fetchPatients();
+    const intervalId = setInterval(fetchPatients, 30000); // Refresh every 30 seconds
 
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
@@ -104,7 +96,6 @@ const FetchedDataPage = () => {
             sx={{ width: "250px" }}
           />
         </Box>
-        <Button onClick={fetchPatients}>Refresh Patients List</Button>
 
         {/* Scrollable List */}
         <Box className="fetched-list-container">
