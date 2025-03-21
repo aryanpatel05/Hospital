@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -11,8 +10,6 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-// For local dev, e.g. "mongodb://localhost:27017/Hospital"
-// For MongoDB Compass, typically the same URL, or a remote cluster
 mongoose
   .connect(
     "mongodb+srv://aryanpatel_05:aryanpatel_05@cluster0.i5o9vwg.mongodb.net/Hospital?retryWrites=true&w=majority",
@@ -24,7 +21,12 @@ mongoose
   .then(() => console.log("MongoDB connected to 'Hospital' database"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Routes
+// Default route for root path
+app.get("/", (req, res) => {
+  res.send("Backend is running! 🚀");
+});
+
+// API routes
 app.use("/api", patientRoutes);
 
 // Start server
