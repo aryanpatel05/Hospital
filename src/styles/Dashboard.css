@@ -1,0 +1,145 @@
+/* Container for the entire dashboard */
+.dashboard-container {
+  display: flex;
+}
+
+/* Override MUI AppBar z-index if needed */
+.app-bar {
+  z-index: 1201; /* or higher than default MUI drawer zIndex */
+}
+
+/* Main content area to the right of the sidebar */
+.main-content {
+  flex-grow: 1;
+  padding: 10px 20px 10px 20px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation0.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.css-1lwhjos-MuiPaper-root-MuiDrawer-paper {
+  background-color: unset;
+}
+/* Spacer for the AppBar's height, so content isn't hidden behind it */
+.toolbar-spacer {
+  margin-bottom: 64px; /* AppBar is ~64px tall by default */
+}
+
+/* Grid styling for the stats cards (optional) */
+.stats-grid {
+  margin-top: 16px; /* or you can rely on MUI spacing prop */
+}
+
+/* Each stats card */
+.stats-card {
+  padding: 5px 10px 5px 10px;
+  height: 100%;
+  border: 1px solid #e0e0e0; /* MUI's "outlined" variant might handle this already */
+  border-radius: 4px;
+}
+
+/* Card header with icon, title, and arrow */
+.stats-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 2px 5px 2px;
+}
+
+.stats-card-title {
+  display: flex;
+  align-items: center;
+}
+
+.stats-card-icon {
+  margin-right: 8px;
+  font-size: 24px;
+}
+
+.stats-card-text {
+  font-weight: 600;
+}
+.Wrapp {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.stats-card-arrow {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+/* Body of the card: main number and subtitle */
+.stats-card-body {
+  margin-top: 8px;
+}
+
+.stats-card-number {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.stats-card-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+}
+.css-11nsb57-MuiGrid-root > .MuiGrid-item {
+  padding: 15px 10px 15px 10px !important;
+}
+
+.css-rizt0-MuiTypography-root {
+  margin: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 15px !important;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+}
+/* Placeholder bar chart at the bottom of each card */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 16px;
+  justify-self: right;
+}
+
+.bar {
+  width: 6px;
+  background-color: #5c6bc0;
+  margin-right: 4px;
+}
+
+/* Remove margin for the last bar */
+.bar:last-child {
+  margin-right: 0;
+}
+
+/* Different bar heights */
+.bar.small {
+  height: 20px;
+  width: 10px;
+}
+
+.bar.medium {
+  height: 35px;
+  width: 10px;
+}
+
+.bar.tiny {
+  height: 15px;
+  width: 10px;
+}
+
+.bar.large {
+  height: 25px;
+  width: 10px;
+}
+
+@media (max-width: 768px) {
+  /* Adjust the main title (MediCare) */
+  .app-bar h6 {
+    font-size: 18px !important; /* Reduce from default (usually around 20px) */
+  }
+
+  /* Adjust the subtitle text (greeting and dashboard info) */
+  .app-bar .MuiTypography-subtitle2 {
+    font-size: 10px !important; /* Or whatever smaller size fits your design */
+  }
+}

@@ -1,0 +1,155 @@
+.calendar-container {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  width: 310px; /* Smaller width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.arrow-container {
+  width: 30px; /* Fixed width for arrow containers */
+  text-align: center;
+}
+
+.arrow {
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+  user-select: none;
+}
+
+.month-year-wrapper {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.month-year-text {
+  margin: 0;
+  font-weight: 500;
+  user-select: none;
+}
+
+.month-year-overlay {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.overlay-content label {
+  font-size: 14px;
+}
+
+.overlay-content select {
+  padding: 4px;
+  font-size: 14px;
+}
+
+.overlay-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.overlay-actions button {
+  padding: 4px 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.surgery {
+  background-color: #f7685b;
+}
+
+.polyclinic {
+  background-color: #e14edd;
+}
+
+.evaluation {
+  background-color: #72c08f;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.calendar-table thead th {
+  font-weight: 500;
+  padding-bottom: 6px;
+  color: #999;
+  font-size: 14px;
+}
+
+.calendar-table td {
+  height: 40px; /* Adjusted cell height for a smaller calendar */
+  vertical-align: top;
+  position: relative;
+  padding: 2px;
+  font-size: 14px;
+  color: #333;
+}
+
+.prev-next-month {
+  color: #ccc;
+}
+
+/* Today: a small blue circle */
+.today-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  background-color: #2196f3;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  margin: auto;
+}
+
+.dots {
+  margin-top: 2px;
+}

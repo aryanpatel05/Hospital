@@ -1,0 +1,98 @@
+.dialog-content {
+  padding: 16px;
+}
+
+/* Ensure all nested elements in dialog content use 12px font */
+.dialog-content * {
+  font-size: 12px !important;
+}
+
+/* Section titles */
+.section-title,
+.allergy-section,
+.medical-history-section,
+.women-only-section {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* Form row: fields in a single row */
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Small age field styling */
+.small-age-field {
+  width: 15%;
+  margin-bottom: 16px;
+}
+
+/* Allergies section margin */
+.allergy-section {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+/* Medical history subtitle */
+.medical-history-subtitle {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+/* Grid for medical history checkboxes */
+.medical-history-grid {
+  margin-bottom: 16px;
+}
+
+/* Prevent label wrapping and ensure spacing between each checkbox */
+.nowrap-label .MuiFormControlLabel-label {
+  white-space: nowrap;
+  display: block;
+}
+
+/* Women Only Section styling */
+.women-only-section {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+.medical-history-section {
+  margin-top: 32px !important;
+}
+/* Dialog actions (buttons) */
+.dialog-actions {
+  padding: 16px;
+}
+.gender-select {
+  width: 15%;
+}
+/* Marital Status dropdown styling
+.marital-status-select {
+  width: 200px;
+} */
+
+/* Gender select styling */
+.gender-select {
+  width: 200px;
+}
+
+/* Birth Date field styling */
+.birth-date-field {
+  width: 200px;
+}
+
+/* Period Type select styling */
+.period-type-select {
+  width: 200px;
+}
+
+/* Difficulty with periods select styling */
+.difficulty-select {
+  width: 200px;
+}
+
+/* Births select styling */
+.births-select {
+  width: 20% !important;
+}

@@ -1,0 +1,87 @@
+.fetched-container {
+  display: flex;
+}
+
+.fetched-content {
+  flex-grow: 1;
+
+  width: 100%;
+  padding: 20px 0px;
+  max-width: 1200px;
+  margin-right: auto;
+}
+
+.fetched-appbar {
+  z-index: 1300;
+}
+
+.fetched-header {
+  position: sticky;
+  top: 64px; /* Below the AppBar */
+  background-color: #fff;
+  z-index: 1250;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.fetched-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.fetched-list-container {
+  margin-top: 20px;
+  max-height: calc(100vh - 140px); /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
+.fetched-paper {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.fetched-list-item {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.fetched-index {
+  width: 30px;
+  text-align: center;
+}
+
+.fetched-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name-gender {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.fetched-name {
+  font-weight: bold;
+}
+
+.fetched-gender {
+  color: #555;
+  font-size: 14px;
+}
+
+.fetched-phone {
+  width: 150px;
+  text-align: center;
+}
+
+.fetched-city {
+  width: 150px;
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+}

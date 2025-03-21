@@ -1,0 +1,63 @@
+/* src/styles/PatientDetailsReport.css */
+
+/* Outer Paper styling to mimic a paper form */
+.patient-report-paper {
+  max-width: 900px;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  padding: 16px;
+  position: relative;
+}
+
+/* Photo container at top-right corner */
+.photo-container {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.photo-container img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Title styling */
+.report-title {
+  font-weight: 600;
+  text-decoration: underline;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Section styling */
+.report-section {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+.report-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Section header styling */
+.section-header {
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* Grid label and value styling */
+.field-label {
+  font-weight: 600;
+  text-align: right;
+  padding-right: 8px;
+  color: #333;
+}
+.field-value {
+  text-align: left;
+  color: #555;
+}
