@@ -16,7 +16,6 @@ router.post("/patient-history", async (req, res) => {
 });
 
 // GET /api/patients: Fetch all patient records
-// GET /api/patients: Fetch all patient records
 router.get("/patients", async (req, res) => {
   try {
     // Use PatientModel instead of Patient
