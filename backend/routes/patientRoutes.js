@@ -18,11 +18,11 @@ router.post("/patient-history", async (req, res) => {
 // GET /api/patients: Fetch all patient records
 router.get("/patients", async (req, res) => {
   try {
-    const patients = await PatientModel.find();
-    return res.json(patients);
+    const patients = await Patient.find({});
+    res.json(patients);
   } catch (error) {
     console.error("Error fetching patients:", error);
-    return res.status(500).json({ message: "Error fetching patients." });
+    res.status(500).json({ message: "Error fetching patients" });
   }
 });
 
