@@ -12,6 +12,7 @@ import {
   Toolbar,
   IconButton,
   TextField,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -26,24 +27,25 @@ const FetchedDataPage = () => {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const fetchPatients = () => {
+    axios
+      .get("https://hospital-qn5w.onrender.com/api/patients")
+      .then((res) => {
+        console.log("Patients fetched:", res.data);
+        setPatients(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching patients:", err);
+        setError("Error fetching patients.");
+        setLoading(false);
+      });
+  };
+
+  // Call fetchPatients in useEffect at the top level
   useEffect(() => {
-    const fetchPatients = () => {
-      axios
-        .get("https://hospital-qn5w.onrender.com/api/patients")
-        .then((res) => {
-          setPatients(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError("Error fetching patients.");
-          setLoading(false);
-        });
-    };
-
     fetchPatients();
-    const intervalId = setInterval(fetchPatients, 30000); // Refresh every 30 seconds
-
-    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
 
   // Filter patients based on search query (case-insensitive)
@@ -95,6 +97,7 @@ const FetchedDataPage = () => {
             size="small"
             sx={{ width: "250px" }}
           />
+          <Button onClick={fetchPatients}>Refresh </Button>
         </Box>
 
         {/* Scrollable List */}
