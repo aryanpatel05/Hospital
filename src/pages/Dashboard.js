@@ -57,9 +57,9 @@ const Dashboard = () => {
             >
               {/* <MenuIcon /> */}
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              MediCare
-            </Typography>
+            <div class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-awgou1">
+              <div class="Title">Medicare</div>
+            </div>
           </Box>
           {/* Greeting & Info */}
           <Box sx={{ textAlign: "right" }}>

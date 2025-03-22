@@ -7,7 +7,10 @@
 .app-bar {
   z-index: 1201; /* or higher than default MUI drawer zIndex */
 }
-
+.Title {
+  color: aliceblue !important;
+  font-size: 25px !important;
+}
 /* Main content area to the right of the sidebar */
 .main-content {
   flex-grow: 1;
