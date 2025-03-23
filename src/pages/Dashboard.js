@@ -45,7 +45,11 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       {/* Top Bar */}
-      <AppBar position="fixed" className="app-bar">
+      <AppBar
+        position="fixed"
+        className="app-bar"
+        sx={{ backgroundColor: "#1976d2", zIndex: 1201 }}
+      >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           {/* Left side: App logo/name + menu icon */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
