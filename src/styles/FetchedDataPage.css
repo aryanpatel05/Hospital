@@ -13,6 +13,7 @@
 
 .fetched-appbar {
   z-index: 1300;
+  background-color: #1976d2 !important;
 }
 
 .fetched-header {

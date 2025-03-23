@@ -74,7 +74,11 @@ const FetchedDataPage = () => {
       {/* Pass the onDetailsClick prop to Sidebar */}
       <Sidebar onDetailsClick={handleDetailsClick} />
       <Box className="fetched-content">
-        <AppBar position="fixed" className="fetched-appbar">
+        <AppBar
+          position="fixed"
+          sx={{ backgroundColor: "#1976d2", zIndex: 1300 }}
+          className="fetched-appbar"
+        >
           <Toolbar>
             <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
               <MenuIcon />
