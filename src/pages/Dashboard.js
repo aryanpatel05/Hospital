@@ -11,7 +11,7 @@ import {
   Card,
   Paper,
 } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "../components/Sidebar";
 
 // Icons for each card
