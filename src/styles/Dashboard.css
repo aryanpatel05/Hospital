@@ -147,9 +147,3 @@
     font-size: 10px !important; /* Or whatever smaller size fits your design */
   }
 }
-@media (min-width: 600px) {
-  .css-1m4126t {
-    min-height: 64px;
-    background-color: #3f51b5;
-  }
-}
