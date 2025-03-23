@@ -6,7 +6,7 @@
 /* Override MUI AppBar z-index if needed */
 .app-bar {
   z-index: 1201; /* or higher than default MUI drawer zIndex */
-  background-color: blue !important;
+  background-color: #1976d2 !important;
 }
 .Title {
   color: aliceblue !important;
