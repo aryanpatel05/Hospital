@@ -59,7 +59,7 @@ const Dashboard = () => {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              {/* <MenuIcon /> */}
+              <MenuIcon sx={{ fontSize: 28 }} />
             </IconButton>
             <div class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-awgou1">
               <div class="Title">Medicare</div>
