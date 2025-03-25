@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans");
+
+:root {
+  --Gap-blue: #0e0620;
+  --Gap-white: #fff;
+  --Gap-green: #2ccf6d;
+}
+
+/* The main wrapper that occupies full height and centers content vertically */
+.GapMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f7fa;
+  font-family: "Nunito Sans", sans-serif;
+  color: var(--Gap-blue);
+}
+
+/* The container that holds both the SVG (left) and text (right) side by side */
+.GapContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* vertically center them */
+  justify-content: center; /* horizontally center if needed */
+  max-width: 500px; /* or whatever width you prefer */
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Left side: the SVG */
+.GapLeft {
+  flex: 1; /* let the SVG take equal space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Right side: the heading, subheading, paragraph, button */
+.GapRight {
+  flex: 1; /* let the text take equal space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Large 404 heading */
+.GapH1 {
+  font-size: 7.5em;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+/* Subheading */
+.GapH2 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Paragraph */
+.GapP {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  /* optional: limit text width */
+}
+
+/* HOME button styling */
+.GapBtn {
+  z-index: 1;
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+  padding: 8px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1em;
+  letter-spacing: 2px;
+  transition: 0.2s ease;
+  font-weight: bold;
+  margin: 5px 0;
+  border: 4px solid var(--Gap-green);
+  color: var(--Gap-blue);
+}
+
+.GapBtn:hover {
+  color: var(--Gap-white);
+  background: var(--Gap-green);
+}
+
+/* Ensure the SVG is initially hidden for GSAP to reveal it */
+.GapSVG {
+  width: 100%;
+  visibility: hidden;
+}
+
+/* Responsive styling for smaller screens */
+@media screen and (max-width: 768px) {
+  .GapContainer {
+    flex-direction: column;
+  }
+  .GapLeft,
+  .GapRight {
+    padding: 10px;
+  }
+  .GapH1 {
+    font-size: 5em;
+  }
+}

@@ -6,6 +6,7 @@ import PatientDetails from "./pages/PatientDetails";
 import FetchedDataPage from "./pages/FetchedDataPage";
 import Register from "./pages/Register";
 import DetailsPage from "./pages/DetailsPage";
+import NotFound from "../src/components/NotFound";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="details" element={<DetailsPage />} />
         <Route path="/patients" element={<FetchedDataPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
