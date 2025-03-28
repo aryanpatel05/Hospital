@@ -73,6 +73,7 @@ const indianCities = [
 
 const PatientHistoryForm = ({ open, onClose }) => {
   const [searchParams] = useSearchParams();
+  // Get the userId from URL parameters (this is the Django user id)
   const userId = searchParams.get("userId") || "";
   // Basic patient info states
   const [firstName, setFirstName] = useState("");
@@ -210,7 +211,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
     if (!validateForm()) return;
 
     const formData = {
-      userId: Number(userId),
+      _id: userId,
       firstName,
       lastName,
       phone,
