@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom"; // <-- Added this import
+
 import "../styles/PatientHistoryForm.css";
 import {
   Dialog,
