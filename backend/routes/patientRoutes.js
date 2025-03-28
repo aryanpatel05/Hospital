@@ -1,3 +1,4 @@
+// backend/routes/patientRoutes.js
 const express = require("express");
 const router = express.Router();
 const PatientModel = require("../models/patient");
@@ -5,16 +6,6 @@ const PatientModel = require("../models/patient");
 // POST /api/patient-history: Save new patient history data
 router.post("/patient-history", async (req, res) => {
   try {
-    // If you want to update an existing document using the _id:
-    if (req.body._id) {
-      const updatedPatient = await PatientModel.findByIdAndUpdate(
-        req.body._id,
-        req.body,
-        { new: true }
-      );
-      return res.status(200).json(updatedPatient);
-    }
-    // Otherwise, create a new document
     const newPatient = new PatientModel(req.body);
     const savedPatient = await newPatient.save();
     return res.status(201).json(savedPatient);
@@ -27,6 +18,7 @@ router.post("/patient-history", async (req, res) => {
 // GET /api/patients: Fetch all patient records
 router.get("/patients", async (req, res) => {
   try {
+    // Use PatientModel instead of Patient
     const patients = await PatientModel.find({});
     res.json(patients);
   } catch (error) {

@@ -24,7 +24,7 @@ const Register = () => {
     axios
       .post("https://hospital-qn5w.onrender.com/api/register", formData)
       .then((res) => {
-        // Assuming the response returns the patient ID (MongoDB _id) after successful registration
+        // Assuming the response returns the patient ID after successful registration
         navigate(`/patient/${res.data.patientId}`);
       })
       .catch((err) => {
