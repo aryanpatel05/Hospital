@@ -24,7 +24,8 @@ const Register = () => {
     axios
       .post("https://hospital-qn5w.onrender.com/api/register", formData)
       .then((res) => {
-        window.location.href = res.data.redirect;
+        // Assuming the response returns the patient ID after successful registration
+        navigate(`/patient/${res.data.patientId}`);
       })
       .catch((err) => {
         console.error(err);

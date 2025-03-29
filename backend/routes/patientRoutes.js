@@ -3,18 +3,9 @@ const express = require("express");
 const router = express.Router();
 const PatientModel = require("../models/patient");
 
-// POST /api/patient-history: Save (or update) patient history data
+// POST /api/patient-history: Save new patient history data
 router.post("/patient-history", async (req, res) => {
   try {
-    // If an _id is provided, update the existing document; otherwise, create new.
-    if (req.body._id) {
-      const updatedPatient = await PatientModel.findByIdAndUpdate(
-        req.body._id,
-        req.body,
-        { new: true }
-      );
-      return res.status(200).json(updatedPatient);
-    }
     const newPatient = new PatientModel(req.body);
     const savedPatient = await newPatient.save();
     return res.status(201).json(savedPatient);

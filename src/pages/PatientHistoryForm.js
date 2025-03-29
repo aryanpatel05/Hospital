@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useSearchParams } from "react-router-dom";
 import "../styles/PatientHistoryForm.css";
 import {
   Dialog,
@@ -71,8 +70,6 @@ const indianCities = [
 ];
 
 const PatientHistoryForm = ({ open, onClose }) => {
-  const [searchParams] = useSearchParams();
-  const userId = searchParams.get("userId") || "";
   // Basic patient info states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -209,7 +206,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
     if (!validateForm()) return;
 
     const formData = {
-      _id: userId, // Use the common userId from URL
       firstName,
       lastName,
       phone,
