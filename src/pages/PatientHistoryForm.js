@@ -215,10 +215,8 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    const cleanAdhar = adharcard.replace(/\s/g, "");
-
     const formData = {
-      adharcard: cleanAdhar,
+      adharcard,
       firstName,
       lastName,
       phone,
