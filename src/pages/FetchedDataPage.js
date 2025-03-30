@@ -1,11 +1,9 @@
-// src/pages/FetchedDataPage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Box,
   Typography,
   Paper,
-  List,
   ListItem,
   ListItemButton,
   AppBar,
@@ -14,7 +12,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import MenuIcon from "@mui/icons-material/Menu";
 import "../styles/FetchedDataPage.css";
@@ -25,19 +23,25 @@ const FetchedDataPage = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract search query from URL
+  const getSearchParam = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("search") || "";
+  };
+
+  const [searchQuery, setSearchQuery] = useState(getSearchParam());
 
   const fetchPatients = () => {
     axios
       .get("https://hospital-qn5w.onrender.com/api/patients")
       .then((res) => {
-        console.log("Patients fetched:", res.data);
         setPatients(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching patients:", err);
         setError("Error fetching patients.");
         setLoading(false);
       });
@@ -47,6 +51,18 @@ const FetchedDataPage = () => {
   useEffect(() => {
     fetchPatients();
   }, []);
+
+  // Sync searchQuery with URL on component mount
+  useEffect(() => {
+    setSearchQuery(getSearchParam());
+  }, [location.search]);
+
+  // Function to update search query and URL
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    navigate(`?search=${encodeURIComponent(query)}`);
+  };
 
   // Filter patients based on search query (case-insensitive)
   const filteredPatients = patients.filter((patient) => {
@@ -64,20 +80,13 @@ const FetchedDataPage = () => {
     );
   });
 
-  // Sidebar "Details" callback
-  const handleDetailsClick = () => {
-    navigate("/details");
-  };
-
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
-      {/* Pass the onDetailsClick prop to Sidebar */}
-      <Sidebar onDetailsClick={handleDetailsClick} />
+      <Sidebar />
       <Box className="fetched-content">
         <AppBar
           position="fixed"
           sx={{ backgroundColor: "#1976d2", zIndex: 1300 }}
-          className="fetched-appbar"
         >
           <Toolbar>
             <IconButton edge="start" color="inherit" sx={{ mr: 2 }}>
@@ -97,11 +106,11 @@ const FetchedDataPage = () => {
           <TextField
             placeholder="Search..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearch}
             size="small"
             sx={{ width: "250px" }}
           />
-          <Button onClick={fetchPatients}>Refresh </Button>
+          <Button onClick={fetchPatients}>Refresh</Button>
         </Box>
 
         {/* Scrollable List */}
