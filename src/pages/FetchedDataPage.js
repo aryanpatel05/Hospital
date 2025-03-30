@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -12,9 +13,8 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 import MenuIcon from "@mui/icons-material/Menu";
+import Sidebar from "../components/Sidebar";
 import "../styles/FetchedDataPage.css";
 
 const defaultPhoto = "https://via.placeholder.com/40";
@@ -23,54 +23,44 @@ const FetchedDataPage = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract search query from URL
-  const getSearchParam = () => {
+  useEffect(() => {
+    // Extract 'username' from query parameters
     const params = new URLSearchParams(location.search);
-    return params.get("search") || "";
-  };
+    const username = params.get("username");
 
-  const [searchQuery, setSearchQuery] = useState(getSearchParam());
+    if (username) {
+      setSearchQuery(username); // Automatically set search query
+    }
+
+    fetchPatients();
+  }, [location.search]);
 
   const fetchPatients = () => {
     axios
       .get("https://hospital-qn5w.onrender.com/api/patients")
       .then((res) => {
+        console.log("Patients fetched:", res.data);
         setPatients(res.data);
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Error fetching patients:", err);
         setError("Error fetching patients.");
         setLoading(false);
       });
   };
 
-  // Call fetchPatients in useEffect at the top level
-  useEffect(() => {
-    fetchPatients();
-  }, []);
-
-  // Sync searchQuery with URL on component mount
-  useEffect(() => {
-    setSearchQuery(getSearchParam());
-  }, [location.search]);
-
-  // Function to update search query and URL
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    navigate(`?search=${encodeURIComponent(query)}`);
-  };
-
-  // Filter patients based on search query (case-insensitive)
   const filteredPatients = patients.filter((patient) => {
     const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
     const phone = patient.phone;
     const city = patient.city ? patient.city.toLowerCase() : "";
     const gender = patient.gender ? patient.gender.toLowerCase() : "";
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery.toLowerCase().trim();
 
     return (
       fullName.includes(query) ||
@@ -93,20 +83,19 @@ const FetchedDataPage = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Patients Data
+              {" "}
+              Patients Data{" "}
             </Typography>
           </Toolbar>
         </AppBar>
 
         {/* Sticky Header with Title and Search Bar */}
         <Box className="fetched-header">
-          <Typography variant="h6" className="fetched-title">
-            List of Registered Patients
-          </Typography>
+          <Typography variant="h6"> List of Registered Patients </Typography>
           <TextField
             placeholder="Search..."
             value={searchQuery}
-            onChange={handleSearch}
+            onChange={(e) => setSearchQuery(e.target.value)}
             size="small"
             sx={{ width: "250px" }}
           />
@@ -123,11 +112,7 @@ const FetchedDataPage = () => {
                 <Typography>No patients found.</Typography>
               ) : (
                 filteredPatients.map((patient, index) => (
-                  <ListItem
-                    key={patient._id}
-                    className="fetched-list-item"
-                    disablePadding
-                  >
+                  <ListItem key={patient._id} disablePadding>
                     <ListItemButton
                       onClick={() => navigate(`/patient/${patient._id}`)}
                     >
@@ -139,35 +124,27 @@ const FetchedDataPage = () => {
                           gap: "16px",
                         }}
                       >
-                        {/* Index number */}
                         <Typography variant="body2" sx={{ width: "30px" }}>
-                          {index + 1}.
+                          {" "}
+                          {index + 1}.{" "}
                         </Typography>
-                        {/* User Photo */}
                         <img
                           src={patient.photo ? patient.photo : defaultPhoto}
                           alt="User"
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: "50%",
-                          }}
+                          style={{ width: 40, height: 40, borderRadius: "50%" }}
                         />
-                        {/* Patient Name */}
                         <Typography
                           variant="body2"
                           sx={{ flexGrow: 1, textAlign: "center" }}
                         >
                           {patient.firstName} {patient.lastName}
                         </Typography>
-                        {/* Mobile Number */}
                         <Typography
                           variant="body2"
                           sx={{ width: "150px", textAlign: "center" }}
                         >
                           +91 {patient.phone}
                         </Typography>
-                        {/* City */}
                         <Typography
                           variant="body2"
                           sx={{
@@ -179,7 +156,6 @@ const FetchedDataPage = () => {
                         >
                           {patient.city ? patient.city : "N/A"}
                         </Typography>
-                        {/* Gender */}
                         <Typography
                           variant="body2"
                           sx={{ width: "80px", textAlign: "center" }}
