@@ -144,11 +144,8 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
   const validateForm = () => {
     // Validate adharcard: must be exactly 12 digits after removing spaces
-    if (!adharcard || adharcard.replace(/\s/g, "").length !== 12) {
-      window.alert("Please enter a valid 12-digit Adharcard number.");
-      return false;
-    }
     const requiredFields = [
+      { field: adharcard, name: "Adharcard" },
       { field: firstName, name: "First Name" },
       { field: lastName, name: "Last Name" },
       { field: phone, name: "Phone" },
@@ -167,7 +164,10 @@ const PatientHistoryForm = ({ open, onClose }) => {
         return false;
       }
     }
-
+    if (!adharcard || adharcard.replace(/\s/g, "").length !== 12) {
+      window.alert("Please enter a valid 12-digit Adharcard number.");
+      return false;
+    }
     if (gender === "female") {
       const womenRequired = [
         { field: periodType, name: "Period Type" },
@@ -215,10 +215,10 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    const adhar = adharcard.replace(/\s/g, "");
+    const cleanAdhar = adharcard.replace(/\s/g, "");
 
     const formData = {
-      adharcard: adhar,
+      adharcard: cleanAdhar,
       firstName,
       lastName,
       phone,
@@ -269,21 +269,19 @@ const PatientHistoryForm = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>New Patient History Form</DialogTitle>
       <DialogContent dividers className="dialog-content">
-        {/* New Adharcard Field */}
-        <TextField
-          label="Adharcard Number"
-          fullWidth
-          value={adharcard}
-          onChange={handleAdharChange}
-          placeholder="1234 5678 3456"
-          inputProps={{ pattern: "^[0-9]{4}( [0-9]{4}){2}$", maxLength: 14 }}
-          margin="normal"
-          required
-        />
         {/* Patient Information Section */}
         <Typography variant="subtitle1" className="section-title">
           Patient Information
         </Typography>
+        <Box className="form-row">
+          <TextField
+            label="Adharcard Number"
+            fullWidth
+            value={adharcard}
+            onChange={handleAdharChange}
+            placeholder="Enter 12-digit Adharcard"
+          />
+        </Box>
         <Box className="form-row">
           <TextField
             label="First Name"
