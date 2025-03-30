@@ -1,4 +1,3 @@
-// src/pages/PatientHistoryForm.js
 import React, { useState } from "react";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -70,7 +69,10 @@ const indianCities = [
 ];
 
 const PatientHistoryForm = ({ open, onClose }) => {
-  // Basic patient info states
+  // NEW: Aadhaar card state
+  const [adharcard, setAdharcard] = useState("");
+
+  // Existing patient info states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -112,6 +114,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
   // Reset function to clear form fields
   const resetForm = () => {
+    setAdharcard("");
     setFirstName("");
     setLastName("");
     setPhone("");
@@ -146,6 +149,11 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
   // Front-end validation for required fields
   const validateForm = () => {
+    // Validate Aadhaar: must be exactly 12 digits numeric (auto-space not enforced in value)
+    if (!/^\d{12}$/.test(adharcard)) {
+      window.alert("Aadhaar card must be exactly 12 digits.");
+      return false;
+    }
     const requiredFields = [
       { field: firstName, name: "First Name" },
       { field: lastName, name: "Last Name" },
@@ -158,14 +166,12 @@ const PatientHistoryForm = ({ open, onClose }) => {
       { field: gender, name: "Gender" },
       { field: birthDate, name: "Birth Date" },
     ];
-
     for (let { field, name } of requiredFields) {
       if (!field) {
         window.alert(`Please fill the ${name} field.`);
         return false;
       }
     }
-
     if (gender === "female") {
       const womenRequired = [
         { field: periodType, name: "Period Type" },
@@ -206,6 +212,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
     if (!validateForm()) return;
 
     const formData = {
+      adharcard, // NEW: include Aadhaar in the data sent to backend
       firstName,
       lastName,
       phone,
@@ -256,6 +263,19 @@ const PatientHistoryForm = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>New Patient History Form</DialogTitle>
       <DialogContent dividers className="dialog-content">
+        {/* NEW: Aadhaar Card Field */}
+        <TextField
+          label="Aadhaar Card (12 digits)"
+          fullWidth
+          value={adharcard}
+          onChange={(e) =>
+            setAdharcard(e.target.value.replace(/\D/g, "").slice(0, 12))
+          }
+          InputProps={{
+            inputProps: { maxLength: 12 },
+          }}
+          margin="normal"
+        />
         {/* Patient Information Section */}
         <Typography variant="subtitle1" className="section-title">
           Patient Information
@@ -322,7 +342,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             onChange={(e) => setSpouseName(e.target.value)}
           />
         </Box>
-        {/* Gender, Birth Date, Age, and City Row */}
+        {/* Gender, Birth Date, Age, and City */}
         <Box className="form-row">
           <FormControl className="gender-select">
             <InputLabel>Gender</InputLabel>

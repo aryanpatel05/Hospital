@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema(
   {
+    // New field for Aadhaar card number (must be exactly 12 digits)
+    adharcard: {
+      type: String,
+      required: [true, "Aadhaar card is required"],
+      match: [/^\d{12}$/, "Aadhaar must be exactly 12 digits"],
+    },
     firstName: { type: String, required: [true, "First Name is required"] },
     lastName: { type: String, required: [true, "Last Name is required"] },
     phone: { type: String, required: [true, "Phone is required"] },
