@@ -29,12 +29,14 @@ const FetchedDataPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Extract "adharcard" from query parameters if present
+    // Extract 'username' from query parameters
     const params = new URLSearchParams(location.search);
-    const adharcard = params.get("adharcard");
-    if (adharcard) {
-      setSearchQuery(adharcard);
+    const username = params.get("username");
+
+    if (username) {
+      setSearchQuery(username); // Automatically set search query
     }
+
     fetchPatients();
   }, [location.search]);
 
@@ -42,18 +44,18 @@ const FetchedDataPage = () => {
     axios
       .get("https://hospital-qn5w.onrender.com/api/patients")
       .then((res) => {
+        console.log("Patients fetched:", res.data);
         setPatients(res.data);
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Error fetching patients:", err);
         setError("Error fetching patients.");
         setLoading(false);
       });
   };
 
-  // Filter patients based on adharcard and other fields
   const filteredPatients = patients.filter((patient) => {
-    const adhar = patient.adharcard ? patient.adharcard : "";
     const fullName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
     const phone = patient.phone;
     const city = patient.city ? patient.city.toLowerCase() : "";
@@ -61,7 +63,6 @@ const FetchedDataPage = () => {
     const query = searchQuery.toLowerCase().trim();
 
     return (
-      adhar.includes(query) ||
       fullName.includes(query) ||
       phone.includes(query) ||
       city.includes(query) ||
@@ -82,26 +83,26 @@ const FetchedDataPage = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Patients Data
+              {" "}
+              Patients Data{" "}
             </Typography>
           </Toolbar>
         </AppBar>
+
+        {/* Sticky Header with Title and Search Bar */}
         <Box className="fetched-header">
-          <Typography variant="h6" className="fetched-title">
-            List of Registered Patients
-          </Typography>
+          <Typography variant="h6"> List of Registered Patients </Typography>
           <TextField
-            placeholder="Search by Adharcard..."
+            placeholder="Search..."
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              navigate(`?adharcard=${encodeURIComponent(e.target.value)}`);
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
             size="small"
             sx={{ width: "250px" }}
           />
           <Button onClick={fetchPatients}>Refresh</Button>
         </Box>
+
+        {/* Scrollable List */}
         <Box className="fetched-list-container">
           {loading && <Typography>Loading...</Typography>}
           {error && <Typography>{error}</Typography>}
@@ -124,7 +125,8 @@ const FetchedDataPage = () => {
                         }}
                       >
                         <Typography variant="body2" sx={{ width: "30px" }}>
-                          {index + 1}.
+                          {" "}
+                          {index + 1}.{" "}
                         </Typography>
                         <img
                           src={patient.photo ? patient.photo : defaultPhoto}
@@ -159,17 +161,6 @@ const FetchedDataPage = () => {
                           sx={{ width: "80px", textAlign: "center" }}
                         >
                           {patient.gender}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            width: "150px",
-                            textAlign: "center",
-                            color: "#333",
-                            fontSize: "14px",
-                          }}
-                        >
-                          {patient.adharcard}
                         </Typography>
                       </Box>
                     </ListItemButton>

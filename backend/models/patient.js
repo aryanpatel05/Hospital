@@ -3,11 +3,6 @@ const mongoose = require("mongoose");
 
 const patientSchema = new mongoose.Schema(
   {
-    adharcard: {
-      type: String,
-      required: [true, "Adharcard is required"],
-      match: [/^\d{12}$/, "Adharcard must be exactly 12 digits"],
-    },
     firstName: { type: String, required: [true, "First Name is required"] },
     lastName: { type: String, required: [true, "Last Name is required"] },
     phone: { type: String, required: [true, "Phone is required"] },

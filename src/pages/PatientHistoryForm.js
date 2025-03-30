@@ -1,3 +1,4 @@
+// src/pages/PatientHistoryForm.js
 import React, { useState } from "react";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -37,6 +38,7 @@ const calculateAge = (birthDate) => {
   return age;
 };
 
+// List of Indian cities
 const indianCities = [
   "Mumbai",
   "Delhi",
@@ -68,8 +70,7 @@ const indianCities = [
 ];
 
 const PatientHistoryForm = ({ open, onClose }) => {
-  // New adharcard state field
-  const [adharcard, setAdharcard] = useState("");
+  // Basic patient info states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -84,6 +85,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const [allergies, setAllergies] = useState("");
   const [medicalHistory, setMedicalHistory] = useState([]);
 
+  // Photo upload state
   const [photo, setPhoto] = useState("");
 
   // Women-only fields
@@ -108,8 +110,8 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const [abnormalPapSmearDescription, setAbnormalPapSmearDescription] =
     useState("");
 
+  // Reset function to clear form fields
   const resetForm = () => {
-    setAdharcard("");
     setFirstName("");
     setLastName("");
     setPhone("");
@@ -142,10 +144,9 @@ const PatientHistoryForm = ({ open, onClose }) => {
     setAbnormalPapSmearDescription("");
   };
 
+  // Front-end validation for required fields
   const validateForm = () => {
-    // Validate adharcard: must be exactly 12 digits after removing spaces
     const requiredFields = [
-      { field: adharcard, name: "Adharcard" },
       { field: firstName, name: "First Name" },
       { field: lastName, name: "Last Name" },
       { field: phone, name: "Phone" },
@@ -164,10 +165,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
         return false;
       }
     }
-    if (!adharcard || adharcard.replace(/\s/g, "").length !== 12) {
-      window.alert("Please enter a valid 12-digit Adharcard number.");
-      return false;
-    }
+
     if (gender === "female") {
       const womenRequired = [
         { field: periodType, name: "Period Type" },
@@ -192,14 +190,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
     return true;
   };
 
-  // Format adharcard input: allow only digits and insert a space every 4 digits
-  const handleAdharChange = (e) => {
-    let digits = e.target.value.replace(/\D/g, "");
-    digits = digits.substring(0, 12);
-    const formatted = digits.replace(/(\d{4})(?=\d)/g, "$1 ");
-    setAdharcard(formatted);
-  };
-
   // Handle file selection for photo upload
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -216,7 +206,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
     if (!validateForm()) return;
 
     const formData = {
-      adharcard,
       firstName,
       lastName,
       phone,
@@ -273,15 +262,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
         </Typography>
         <Box className="form-row">
           <TextField
-            label="Adharcard Number"
-            fullWidth
-            value={adharcard}
-            onChange={handleAdharChange}
-            placeholder="Enter 12-digit Adharcard"
-          />
-        </Box>
-        <Box className="form-row">
-          <TextField
             label="First Name"
             fullWidth
             value={firstName}
@@ -319,6 +299,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             onChange={(e) => setOccupation(e.target.value)}
           />
         </Box>
+        {/* Marital Status & Spouse Name */}
         <Box className="form-row">
           <FormControl fullWidth className="marital-status-select">
             <InputLabel>Marital Status</InputLabel>
@@ -341,6 +322,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             onChange={(e) => setSpouseName(e.target.value)}
           />
         </Box>
+        {/* Gender, Birth Date, Age, and City Row */}
         <Box className="form-row">
           <FormControl className="gender-select">
             <InputLabel>Gender</InputLabel>
@@ -397,6 +379,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             </Select>
           </FormControl>
         </Box>
+        {/* Photo Upload Section */}
         <Box className="form-row" sx={{ alignItems: "center", mb: 2 }}>
           <Typography variant="body1" sx={{ mr: 2 }}>
             Upload Photo:
@@ -423,6 +406,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             </Box>
           )}
         </Box>
+        {/* Allergies Section */}
         <Typography variant="subtitle1" className="allergy-section">
           Allergies
         </Typography>
@@ -446,6 +430,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             disabled={!allergic}
           />
         </FormGroup>
+        {/* Past Medical History Section */}
         <Typography variant="subtitle1" className="medical-history-section">
           Past Medical History and Review of Systems
         </Typography>
@@ -513,6 +498,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
             </Grid>
           ))}
         </Grid>
+        {/* WOMEN ONLY SECTION - conditionally rendered */}
         {gender === "female" && (
           <>
             <Typography variant="subtitle1" className="women-only-title">
@@ -721,6 +707,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
           </>
         )}
       </DialogContent>
+
       <DialogActions className="dialog-actions">
         <Button onClick={onClose} color="inherit">
           Cancel

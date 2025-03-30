@@ -79,12 +79,6 @@ const PatientDetails = () => {
                 Basic Information
               </Typography>
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={3} className="field-label">
-                  Adharcard:
-                </Grid>
-                <Grid item xs={12} sm={3} className="field-value">
-                  {patient.adharcard}
-                </Grid>
                 {/* Row 1: Name / Phone */}
                 <Grid item xs={12} sm={3} className="field-label">
                   Name:
