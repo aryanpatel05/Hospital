@@ -31,10 +31,10 @@ const FetchedDataPage = () => {
   useEffect(() => {
     // Extract 'username' from query parameters
     const params = new URLSearchParams(location.search);
-    const username = params.get("username");
+    const mobile = params.get("mobile");
 
-    if (username) {
-      setSearchQuery(username); // Automatically set search query
+    if (mobile) {
+      setSearchQuery(mobile);
     }
 
     fetchPatients();
