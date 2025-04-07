@@ -72,7 +72,6 @@ const indianCities = [
 const PatientHistoryForm = ({ open, onClose }) => {
   // Basic patient info states
   const [firstName, setFirstName] = useState("");
-  const [adharcard, setAdharcard] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [occupation, setOccupation] = useState("");
@@ -209,7 +208,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
     const formData = {
       firstName,
       lastName,
-      adharcard,
       phone,
       occupation,
       maritalStatus,
@@ -276,7 +274,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </Box>
-
         <Box className="form-row">
           <TextField
             label="Phone"
@@ -367,21 +364,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
               InputProps={{ readOnly: true }}
             />
           </Box>
-          <TextField
-            label="Adharcard Number"
-            fullWidth
-            value={adharcard}
-            onChange={(e) => {
-              // Only allow digits and limit to 12 characters
-              const digits = e.target.value.replace(/\D/g, "").slice(0, 12);
-              setAdharcard(digits);
-            }}
-            inputProps={{
-              pattern: "\\d{12}",
-              maxLength: 12,
-              title: "Adharcard number must be exactly 12 digits",
-            }}
-          />
           <FormControl className="city-select" sx={{ width: "150px" }}>
             <InputLabel>City</InputLabel>
             <Select
