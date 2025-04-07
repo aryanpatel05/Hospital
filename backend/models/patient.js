@@ -5,6 +5,11 @@ const patientSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: [true, "First Name is required"] },
     lastName: { type: String, required: [true, "Last Name is required"] },
+    adharcard: {
+      type: String,
+      required: [true, "Adharcard number is required"],
+      match: [/^\d{12}$/, "Adharcard must be exactly 12 digits"],
+    },
     phone: { type: String, required: [true, "Phone is required"] },
     city: { type: String, required: [true, "City is required"] }, // New field
     occupation: { type: String, required: [true, "Occupation is required"] },
