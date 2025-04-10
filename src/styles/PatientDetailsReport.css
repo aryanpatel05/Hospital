@@ -1,63 +1,501 @@
 /* src/styles/PatientDetailsReport.css */
 
-/* Outer Paper styling to mimic a paper form */
-.patient-report-paper {
-  max-width: 900px;
-  margin: 0 auto;
-  border: 2px solid #ccc;
-  padding: 16px;
-  position: relative;
+/* --- Global Base and Reset Styles --- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: #eef2f6; /* Light grey background for contrast */
 }
 
-/* Photo container at top-right corner */
-.photo-container {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+/* --- Main Card Container --- */
+.patient-report-paper {
+  max-width: 850px; /* Slightly adjusted width */
+  margin: 30px auto;
+  background-color: #ffffff;
+  /* border: 1px solid #d0d8e2; */ /* Removed border, using shadow */
+  padding: 0; /* Remove padding, handle inside */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden; /* Ensure children borders/backgrounds are contained */
 }
-.photo-container img {
-  width: 100px;
-  height: 100px;
+
+/* --- Top Blue Header Section --- */
+.report-header-blue {
+  background-color: #0d6efd; /* Primary blue */
+  color: #ffffff;
+  padding: 20px 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between avatar and text */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-avatar {
+  width: 60px; /* Slightly smaller avatar */
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.5); /* White border */
+  background-color: #fff; /* Fallback background */
 }
 
-/* Title styling */
-.report-title {
+.header-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allow info to take remaining space */
+}
+
+.header-name {
+  font-size: 1.3rem !important; /* <<< ADJUSTED FONT SIZE */
   font-weight: 600;
-  text-decoration: underline;
-  margin-bottom: 16px;
-  text-transform: uppercase;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.header-meta {
+  font-size: 0.85rem; /* Adjusted size */
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between meta items */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  color: #e0e0e0; /* Lighter text color */
+}
+
+.header-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between icon and text */
+}
+
+.header-meta-item .MuiSvgIcon-root {
+  font-size: 1rem; /* Icon size */
+}
+
+.header-allergy-tag {
+  background-color: #dc3545; /* Red background */
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex; /* Use inline-flex */
+  align-items: center;
+  gap: 4px;
+  margin-left: 10px; /* Space from other meta items */
+}
+.header-allergy-tag .MuiSvgIcon-root {
+  font-size: 0.9rem; /* Smaller icon for tag */
+}
+
+/* --- Content Padding Area --- */
+.report-content-padding {
+  padding: 25px;
+}
+
+/* --- Report Title Section --- */
+.report-title-box {
   text-align: center;
+  margin-bottom: 30px; /* Increased margin */
+  margin-top: 10px; /* Add some top margin */
 }
 
-/* Section styling */
-.report-section {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-}
-.report-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-/* Section header styling */
-.section-header {
+.report-title {
+  font-size: 1rem !important; /* <<< ADJUSTED FONT SIZE */
   font-weight: 600;
-  margin-bottom: 8px;
+  color: #343a40; /* Darker grey */
   text-transform: uppercase;
+  /* text-decoration: underline; */ /* Removed underline */
+  margin-bottom: 4px;
 }
 
-/* Grid label and value styling */
-.field-label {
-  font-weight: 600;
-  text-align: right;
-  padding-right: 8px;
-  color: #333;
+.report-subtitle {
+  font-size: 0.85rem;
+  color: #6c757d; /* Medium grey */
+  background-color: #e9ecef; /* Light grey background */
+  padding: 3px 10px;
+  border-radius: 12px; /* Pill shape */
+  display: inline-block; /* Allow background only on text */
 }
-.field-value {
-  text-align: left;
-  color: #555;
+
+/* --- Section Container --- */
+.report-section {
+  /* background-color: #fafbff; */ /* Remove default background */
+  /* border: 1px solid #dce1eb; */ /* Remove default border */
+  border: 1px solid #dce1eb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+/* --- Section Headers --- */
+.section-title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and title */
+  margin-bottom: 15px; /* Space below title */
+  padding-bottom: 8px; /* Space above divider */
+  border-bottom: 1px solid #dee2e6; /* Divider line */
+}
+
+.section-icon {
+  color: #0d6efd; /* Blue icon color */
+}
+
+.section-title {
+  font-size: 1rem !important; /* Section title size */
+  font-weight: 800 !important;
+  color: #0d6efd; /* Blue title color */
+  margin: 0; /* Remove default margin */
+}
+
+/* --- Personal Information Specific Styles --- */
+.personal-info-grid {
+  padding: 0 10px; /* Add slight horizontal padding */
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px; /* Space between items */
+  min-height: 50px; /* Ensure items have some minimum height */
+}
+
+.info-label {
+  font-size: 0.75rem; /* Smaller label */
+  color: #6c757d; /* Medium grey */
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-label .MuiSvgIcon-root {
+  font-size: 0.9rem; /* Small icon in label */
+  color: #6c757d; /* Match label color */
+}
+
+.info-value {
+  font-size: 0.95rem; /* Standard value size */
+  font-weight: 500; /* Slightly bolder */
+  color: #343a40; /* Darker grey */
+  word-wrap: break-word; /* Ensure long values wrap */
+}
+
+/* --- Allergy Section --- */
+.allergy-section-content {
+  background-color: #fceded; /* Light pink background */
+  border: 1px solid #f5c6cb; /* Reddish border */
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px; /* Space from section title */
+}
+.allergy-content {
+  /* Renamed from allergy-section-content in previous attempts */
+  background-color: #fceded;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.allergy-warning-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #842029; /* Darker red text */
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.allergy-warning-line .MuiSvgIcon-root {
+  color: #dc3545; /* Red icon */
+}
+
+.allergy-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 5px 0 0px 30px !important;
+}
+
+.allergy-pill {
+  background-color: #f8d7da; /* Lighter pink */
+  color: #842029; /* Dark red text */
+  padding: 4px 10px;
+  border-radius: 15px; /* Pill shape */
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* --- Medical History Section --- */
+.medical-history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between items */
+  margin-top: 10px; /* Space from section title */
+}
+
+.medical-history-item {
+  background-color: #f8f9fa; /* Very light grey */
+  border: 1px solid #dee2e6; /* Light border */
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #495057; /* Dark grey text */
+}
+
+.medical-history-item .MuiSvgIcon-root {
+  color: #0d6efd; /* Blue icon */
+  font-size: 1.1rem;
+}
+
+/* --- Women's Health Section --- */
+
+/* Menstrual Info Block */
+.menstrual-info-block {
+  background-color: #f3e8fd; /* Light purple */
+  border: 1px solid #e0cffc; /* Purple border */
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px; /* Space from section title */
+  margin-bottom: 20px; /* Space before reproductive history */
+}
+
+.menstrual-info-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6f42c1; /* Purple color */
+  margin-bottom: 15px;
+}
+
+/* Reproductive History Block */
+.reproductive-history-block {
+  background-color: #e7f3fe; /* Light blue */
+  border: 1px solid #cfe2ff; /* Blue border */
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px; /* Space before detailed questions */
+}
+
+.reproductive-history-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0d6efd; /* Blue color */
+  margin-bottom: 15px;
+}
+
+.reproductive-cards-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(120px, 1fr)
+  ); /* Responsive grid */
+  gap: 15px;
+}
+
+.reproductive-card {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.reproductive-card-icon {
+  font-size: 1.8rem !important; /* Larger icon */
+  color: #0d6efd; /* Blue icon */
+  flex-shrink: 0; /* Prevent icon from shrinking */
+}
+/* Specific icon colors if needed */
+.reproductive-card-icon.pregnancies {
+  color: #6f42c1;
+} /* Purple */
+.reproductive-card-icon.births {
+  color: #198754;
+} /* Green */
+.reproductive-card-icon.miscarriages {
+  color: #ffc107;
+} /* Yellow */
+.reproductive-card-icon.abortions {
+  color: #dc3545;
+} /* Red */
+
+.reproductive-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.reproductive-card-number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #343a40;
+  line-height: 1; /* Adjust line height */
+}
+
+.reproductive-card-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+/* Detailed Women's Health Questions (Vertical Line Section) */
+.womens-health-details-container {
+  position: relative;
+  padding-left: 25px; /* Space for the vertical line and icons */
+  margin-top: 10px;
+}
+
+.womens-health-vertical-line {
+  position: absolute;
+  left: 10px; /* Position to the left */
+  top: 5px; /* Align with the start of the first item's icon */
+  bottom: 5px; /* Extend to the end of the last item */
+  width: 2px;
+  background-color: #0d6efd; /* Blue line */
+  border-radius: 1px;
+}
+
+.womens-health-item {
+  position: relative; /* Needed for icon positioning */
+  margin-bottom: 18px; /* Space between items */
+  padding-left: 10px; /* Space from icon to text */
+}
+
+.womens-health-item-icon {
+  position: absolute;
+  left: -18px; /* Position icon over the line */
+  top: 0px; /* Align icon vertically */
+  color: #0d6efd; /* Blue icon */
+  background-color: #ffffff; /* White background to sit on top of the line */
+  border-radius: 50%;
+  font-size: 1.1rem !important; /* Consistent icon size */
+  padding: 2px; /* Small padding around icon */
+}
+
+.womens-health-question {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 3px;
+}
+
+.womens-health-answer {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.womens-health-answer.yes {
+  color: #198754; /* Green for Yes */
+}
+
+.womens-health-answer.no {
+  color: #dc3545; /* Red for No */
+}
+/* Style for N/A answers */
+.womens-health-answer:not(.yes):not(.no) {
+  color: #6c757d; /* Grey for N/A */
+  font-style: italic;
+}
+
+.womens-health-description {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 2px; /* Space below Yes/No */
+  display: inline; /* Keep description on same line if possible */
+}
+
+/* --- Report Footer --- */
+.report-footer {
+  display: block;
+  text-align: center;
+  margin-top: 30px; /* Increased margin */ /* Padding at the bottom */
+  color: #888888;
+  font-size: 10px !important;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .report-header-blue {
+    /* flex-direction: column; Remove this to keep avatar and info side-by-side longer */
+    /* align-items: flex-start; */
+    gap: 15px;
+  }
+  .header-meta {
+    gap: 10px; /* Reduce gap */
+  }
+  .reproductive-cards-container {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(110px, 1fr)
+    ); /* Adjust grid for smaller screens */
+    gap: 10px;
+  }
+  .reproductive-card {
+    gap: 8px;
+    padding: 10px;
+  }
+  .reproductive-card-number {
+    font-size: 1.3rem;
+  }
+  .reproductive-card-icon {
+    font-size: 1.6rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .personal-info-grid {
+    /* grid-template-columns: 1fr; Stack items vertically if needed, or keep 2 columns */
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Keep 2 columns on smaller screens */
+    gap: 5px 15px; /* Reduce gap */
+  }
+  .report-content-padding {
+    padding: 15px; /* Reduce padding */
+  }
+  .womens-health-details-container {
+    padding-left: 20px; /* Adjust padding */
+  }
+  .womens-health-vertical-line {
+    left: 8px; /* Adjust line position */
+  }
+  .womens-health-item-icon {
+    left: -14px; /* Adjust icon position */
+  }
+  .report-header-blue {
+    flex-direction: column; /* Stack header items on very small screens */
+    align-items: flex-start;
+  }
+  .header-name {
+    font-size: 1.5rem; /* Slightly smaller name on mobile */
+  }
+  .header-meta {
+    font-size: 0.8rem;
+  }
+  .reproductive-cards-container {
+    grid-template-columns: repeat(2, 1fr); /* Ensure 2 columns minimum */
+  }
+}
+
+@media (max-width: 400px) {
+  .personal-info-grid {
+    grid-template-columns: 1fr; /* Stack personal info on very small screens */
+  }
+  .reproductive-cards-container {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Keep 2 columns even on very small screens */
+  }
 }
