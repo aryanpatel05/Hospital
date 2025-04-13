@@ -190,6 +190,20 @@ const PatientHistoryForm = ({ open, onClose }) => {
     return true;
   };
 
+  // Add this function inside your PatientHistoryForm component
+  const handleMedicalHistoryChange = (event, condition) => {
+    const isChecked = event.target.checked;
+    setMedicalHistory((prevHistory) => {
+      if (isChecked) {
+        // Add the condition if it's not already there
+        return [...prevHistory, condition];
+      } else {
+        // Remove the condition
+        return prevHistory.filter((item) => item !== condition);
+      }
+    });
+  };
+
   // Handle file selection for photo upload
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -491,9 +505,17 @@ const PatientHistoryForm = ({ open, onClose }) => {
           ].map((item, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <FormControlLabel
-                control={<Checkbox />}
+                control={
+                  <Checkbox
+                    // Add these two props:
+                    checked={medicalHistory.includes(item)} // Control checked state
+                    onChange={(event) =>
+                      handleMedicalHistoryChange(event, item)
+                    } // Handle changes
+                  />
+                }
                 label={item}
-                className="nowrap-label"
+                className="nowrap-label" // Consider removing if labels wrap undesirably
               />
             </Grid>
           ))}
