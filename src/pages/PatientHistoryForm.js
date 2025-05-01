@@ -417,12 +417,10 @@ const PatientHistoryForm = ({ open, onClose }) => {
             </Select>
           </FormControl>
           <TextField
-            label="Spouse Name"
+            label="Kin Name"
             fullWidth
             value={spouseName}
             onChange={(e) => setSpouseName(e.target.value)}
-            // Conditionally require spouse name if married?
-            required={maritalStatus === "married"}
           />
         </Box>
         <Box className="form-row">
