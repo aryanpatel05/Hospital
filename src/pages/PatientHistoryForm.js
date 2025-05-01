@@ -581,7 +581,9 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 label="Pregnancies"
                 type="number"
                 className="small-field"
-                slotProps={{ htmlInput: { min: 0 } }}
+                value={pregnancies} // Add this
+                onChange={(e) => setPregnancies(e.target.value)} // Add this
+                slotProps={{ htmlInput: { min: 0 } }} // Or inputProps depending on MUI version
               />
               <FormControl fullWidth className="births-select">
                 <InputLabel>Births</InputLabel>
