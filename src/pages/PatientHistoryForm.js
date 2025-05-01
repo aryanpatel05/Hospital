@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import InputAdornment from "@mui/material/InputAdornment";
 import DeleteIcon from "@mui/icons-material/Delete";
-import "../styles/PatientHistoryForm.css";
+import "../styles/PatientHistoryForm.css"; // Ensure this path is correct
 import {
   Dialog,
   DialogTitle,
@@ -35,10 +35,10 @@ const calculateAge = (birthDate) => {
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
     age--;
   }
-  return age;
+  return age > 0 ? age : 0; // Ensure age is not negative
 };
 
-// List of Indian cities
+// List of Indian cities (keep as is)
 const indianCities = [
   "Mumbai",
   "Delhi",
@@ -86,18 +86,19 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const [medicalHistory, setMedicalHistory] = useState([]);
 
   // Photo upload state
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(""); // Base64 string or empty
 
   // Women-only fields
   const [periodType, setPeriodType] = useState("");
-  const [stillHavingPeriods, setStillHavingPeriods] = useState("no");
+  const [stillHavingPeriods, setStillHavingPeriods] = useState("yes"); // Default might be better as 'yes' or ''
   const [difficultyWithPeriods, setDifficultyWithPeriods] = useState("");
   const [pregnancies, setPregnancies] = useState("");
-  const [births, setBirths] = useState("");
-  const [otherBirths, setOtherBirths] = useState("");
+  // REMOVED: births, otherBirths states
   const [miscarriages, setMiscarriages] = useState("");
   const [abortions, setAbortions] = useState("");
   const [lastPeriodDate, setLastPeriodDate] = useState("");
+  const [ageOnset, setAgeOnset] = useState(""); // Added state for Age Onset
+
   // Description fields for women-only section
   const [leakageOfUrine, setLeakageOfUrine] = useState("no");
   const [leakageDescription, setLeakageDescription] = useState("");
@@ -127,13 +128,14 @@ const PatientHistoryForm = ({ open, onClose }) => {
     setMedicalHistory([]);
     setPhoto("");
     setPeriodType("");
-    setStillHavingPeriods("no");
+    setStillHavingPeriods("yes"); // Reset to default
     setDifficultyWithPeriods("");
     setPregnancies("");
-    setBirths("");
-    setOtherBirths("");
+    // REMOVED: setBirths(""), setOtherBirths("")
     setMiscarriages("");
     setAbortions("");
+    setLastPeriodDate("");
+    setAgeOnset(""); // Reset age onset
     setLeakageOfUrine("no");
     setLeakageDescription("");
     setPelvicPain("no");
@@ -152,7 +154,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
       { field: phone, name: "Phone" },
       { field: occupation, name: "Occupation" },
       { field: maritalStatus, name: "Marital Status" },
-      { field: spouseName, name: "Spouse Name" },
+      { field: spouseName, name: "Spouse Name" }, // Often not required if unmarried? Consider logic.
       { field: city, name: "City" },
       { field: age, name: "Age" },
       { field: gender, name: "Gender" },
@@ -160,7 +162,8 @@ const PatientHistoryForm = ({ open, onClose }) => {
     ];
 
     for (let { field, name } of requiredFields) {
-      if (!field) {
+      // Check for null, undefined, and empty string
+      if (field === null || field === undefined || field === "") {
         window.alert(`Please fill the ${name} field.`);
         return false;
       }
@@ -168,11 +171,14 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
     if (gender === "female") {
       const womenRequired = [
+        { field: ageOnset, name: "Age onset" }, // Added age onset validation
         { field: periodType, name: "Period Type" },
         { field: stillHavingPeriods, name: "Still having periods" },
+        // Add lastPeriodDate only if stillHavingPeriods is 'yes'?
+        // { field: lastPeriodDate, name: "Date of last period" }, // Consider making conditional
         { field: difficultyWithPeriods, name: "Difficulty with periods" },
         { field: pregnancies, name: "Pregnancies" },
-        { field: births, name: "Births" },
+        // REMOVED: { field: births, name: "Births" },
         { field: miscarriages, name: "Miscarriages" },
         { field: abortions, name: "Abortions" },
         { field: leakageOfUrine, name: "Leakage of urine" },
@@ -181,36 +187,57 @@ const PatientHistoryForm = ({ open, onClose }) => {
         { field: abnormalPapSmear, name: "Abnormal Pap Smear" },
       ];
       for (let { field, name } of womenRequired) {
-        if (!field) {
+        // Check for null, undefined, and empty string (important for dropdowns/numbers)
+        if (field === null || field === undefined || field === "") {
           window.alert(`Please fill the ${name} field.`);
           return false;
         }
+      }
+      // Additional check for conditional descriptions
+      if (leakageOfUrine === "yes" && !leakageDescription) {
+        window.alert("Please describe the leakage of urine.");
+        return false;
+      }
+      if (pelvicPain === "yes" && !pelvicDescription) {
+        window.alert("Please describe the pelvic pain.");
+        return false;
+      }
+      if (abnormalDischarge === "yes" && !abnormalDischargeDescription) {
+        window.alert("Please describe the abnormal discharge.");
+        return false;
+      }
+      if (abnormalPapSmear === "yes" && !abnormalPapSmearDescription) {
+        window.alert("Please describe the abnormal Pap Smear.");
+        return false;
       }
     }
     return true;
   };
 
-  // Add this function inside your PatientHistoryForm component
+  // handleMedicalHistoryChange (keep as is)
   const handleMedicalHistoryChange = (event, condition) => {
     const isChecked = event.target.checked;
     setMedicalHistory((prevHistory) => {
       if (isChecked) {
-        // Add the condition if it's not already there
         return [...prevHistory, condition];
       } else {
-        // Remove the condition
         return prevHistory.filter((item) => item !== condition);
       }
     });
   };
 
-  // Handle file selection for photo upload
+  // handlePhotoChange (keep as is, but be aware of 413 Payload Too Large if not fixed)
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Optional: Add file size check here before reading
+      // if (file.size > 5 * 1024 * 1024) { // Example: 5MB limit
+      //   window.alert("Image file is too large. Please upload an image smaller than 5MB.");
+      //   return;
+      // }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhoto(reader.result);
+        setPhoto(reader.result); // This Base64 can be very large
       };
       reader.readAsDataURL(file);
     }
@@ -218,6 +245,13 @@ const PatientHistoryForm = ({ open, onClose }) => {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+
+    // Ensure numeric fields are numbers, defaulting to 0 if empty/NaN after validation
+    const finalPregnancies = Number(pregnancies) || 0;
+    const finalMiscarriages = Number(miscarriages) || 0;
+    const finalAbortions = Number(abortions) || 0;
+    const finalAge = Number(age) || 0;
+    const finalAgeOnset = Number(ageOnset) || 0; // Convert ageOnset
 
     const formData = {
       firstName,
@@ -227,50 +261,100 @@ const PatientHistoryForm = ({ open, onClose }) => {
       maritalStatus,
       spouseName,
       city,
-      age: Number(age),
+      age: finalAge,
       gender,
       birthDate,
       allergic,
       allergies: allergic ? allergies : "",
       medicalHistory,
-      photo,
+      photo: photo, // Still sending Base64 photo - risk of 413 error remains!
+      // Women-only fields:
+      ageOnset: finalAgeOnset, // Send ageOnset
       periodType,
       stillHavingPeriods,
+      lastPeriodDate, // Send last period date
       difficultyWithPeriods,
-      pregnancies: Number(pregnancies),
-      births: births === "other" ? Number(otherBirths) : Number(births),
-      miscarriages: Number(miscarriages),
-      abortions: Number(abortions),
+      pregnancies: finalPregnancies,
+      // REMOVED: births
+      miscarriages: finalMiscarriages,
+      abortions: finalAbortions,
       leakageOfUrine,
-      leakageDescription,
+      leakageDescription: leakageOfUrine === "yes" ? leakageDescription : "",
       pelvicPain,
-      pelvicDescription,
+      pelvicDescription: pelvicPain === "yes" ? pelvicDescription : "",
       abnormalDischarge,
-      abnormalDischargeDescription,
+      abnormalDischargeDescription:
+        abnormalDischarge === "yes" ? abnormalDischargeDescription : "",
       abnormalPapSmear,
-      abnormalPapSmearDescription,
+      abnormalPapSmearDescription:
+        abnormalPapSmear === "yes" ? abnormalPapSmearDescription : "",
     };
+
+    // Log data just before sending
+    console.log("Submitting formData:", JSON.stringify(formData, null, 2));
 
     try {
       const res = await axios.post(
         "https://hospital-qn5w.onrender.com/api/patient-history",
-        formData
+        formData,
+        {
+          // Optional: If you increased backend limits AND still get 413,
+          // you might need to set maxBodyLength here for Axios too,
+          // but fixing the photo upload method is better.
+          // maxBodyLength: Infinity,
+          // maxContentLength: Infinity,
+        }
       );
       console.log("Patient data saved:", res.data);
       window.alert("Patient registered successfully!");
       resetForm();
       onClose();
     } catch (error) {
-      console.error("Error saving patient data:", error);
-      window.alert("Error saving patient data. Please try again.");
+      console.error("--- Error Saving Patient Data ---");
+      console.error("Error Object:", error);
+
+      let alertMessage = "Error saving patient data. Please try again.";
+
+      if (error.response) {
+        console.error("Backend Status Code:", error.response.status);
+        console.error("Backend Response Data:", error.response.data);
+        // Try to extract a meaningful message from backend response
+        const responseData = error.response.data;
+        if (responseData) {
+          if (typeof responseData === "string") {
+            alertMessage += `\nServer Error: ${responseData}`;
+          } else if (responseData.message) {
+            alertMessage += `\nServer Error: ${responseData.message}`;
+            // Check for Mongoose validation errors object
+            if (responseData.errors) {
+              const errorFields = Object.keys(responseData.errors).join(", ");
+              alertMessage += `\nValidation issues with: ${errorFields}`;
+            }
+          } else {
+            alertMessage += `\nStatus: ${error.response.status}`;
+          }
+        } else {
+          alertMessage += `\nStatus: ${error.response.status}`;
+        }
+      } else if (error.request) {
+        console.error("No response received from backend:", error.request);
+        alertMessage =
+          "Could not connect to the server. Please check your internet connection or try again later.";
+      } else {
+        console.error("Error setting up request:", error.message);
+        alertMessage = `Error setting up request: ${error.message}`;
+      }
+
+      window.alert(alertMessage);
     }
   };
 
+  // --- JSX Structure ---
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>New Patient History Form</DialogTitle>
       <DialogContent dividers className="dialog-content">
-        {/* Patient Information Section */}
+        {/* Patient Information Section (Keep As Is) */}
         <Typography variant="subtitle1" className="section-title">
           Patient Information
         </Typography>
@@ -280,49 +364,52 @@ const PatientHistoryForm = ({ open, onClose }) => {
             fullWidth
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            required
           />
           <TextField
             label="Last Name"
             fullWidth
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            required
           />
         </Box>
         <Box className="form-row">
           <TextField
             label="Phone"
+            required
             fullWidth
             value={phone}
             onChange={(e) => {
               const digits = e.target.value.replace(/\D/g, "");
-              if (digits.length <= 10) {
-                setPhone(digits);
-              }
+              if (digits.length <= 10) setPhone(digits);
             }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">+91</InputAdornment>
               ),
-              inputProps: { maxLength: 10 },
             }}
+            inputProps={{ maxLength: 10, inputMode: "tel" }}
           />
           <TextField
             label="Occupation"
+            required
             fullWidth
             value={occupation}
             onChange={(e) => setOccupation(e.target.value)}
           />
         </Box>
-        {/* Marital Status & Spouse Name */}
         <Box className="form-row">
-          <FormControl fullWidth className="marital-status-select">
+          <FormControl fullWidth className="marital-status-select" required>
             <InputLabel>Marital Status</InputLabel>
             <Select
               value={maritalStatus}
               label="Marital Status"
               onChange={(e) => setMaritalStatus(e.target.value)}
             >
-              <MenuItem value="">---</MenuItem>
+              <MenuItem value="">
+                <em>---</em>
+              </MenuItem>
               <MenuItem value="married">Married</MenuItem>
               <MenuItem value="unmarried">Unmarried</MenuItem>
               <MenuItem value="divorced">Divorced</MenuItem>
@@ -334,18 +421,22 @@ const PatientHistoryForm = ({ open, onClose }) => {
             fullWidth
             value={spouseName}
             onChange={(e) => setSpouseName(e.target.value)}
+            // Conditionally require spouse name if married?
+            required={maritalStatus === "married"}
+            disabled={maritalStatus !== "married" && maritalStatus !== "widow"} // Example logic
           />
         </Box>
-        {/* Gender, Birth Date, Age, and City Row */}
         <Box className="form-row">
-          <FormControl className="gender-select">
+          <FormControl className="gender-select" required>
             <InputLabel>Gender</InputLabel>
             <Select
               value={gender}
               label="Gender"
               onChange={(e) => setGender(e.target.value)}
             >
-              <MenuItem value="">---</MenuItem>
+              <MenuItem value="">
+                <em>---</em>
+              </MenuItem>
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
               <MenuItem value="other">Other</MenuItem>
@@ -356,15 +447,14 @@ const PatientHistoryForm = ({ open, onClose }) => {
               label="Birth Date"
               type="date"
               fullWidth
+              required
               value={birthDate}
               onChange={(e) => {
                 const newBirthDate = e.target.value;
                 setBirthDate(newBirthDate);
-                if (newBirthDate) {
-                  setAge(calculateAge(newBirthDate).toString());
-                } else {
-                  setAge("");
-                }
+                setAge(
+                  newBirthDate ? calculateAge(newBirthDate).toString() : ""
+                );
               }}
               InputLabelProps={{ shrink: true }}
             />
@@ -378,27 +468,37 @@ const PatientHistoryForm = ({ open, onClose }) => {
               InputProps={{ readOnly: true }}
             />
           </Box>
-          <FormControl className="city-select" sx={{ width: "150px" }}>
+          <FormControl className="city-select" sx={{ minWidth: 150 }} required>
+            {" "}
+            {/* Use minWidth */}
             <InputLabel>City</InputLabel>
             <Select
               value={city}
               label="City"
               onChange={(e) => setCity(e.target.value)}
             >
-              {indianCities.map((c, idx) => (
-                <MenuItem key={idx} value={c}>
-                  {c}
-                </MenuItem>
-              ))}
+              <MenuItem value="">
+                <em>---</em>
+              </MenuItem>
+              {indianCities.sort().map(
+                (
+                  c // Sort cities alphabetically
+                ) => (
+                  <MenuItem key={c} value={c}>
+                    {c}
+                  </MenuItem>
+                )
+              )}
             </Select>
           </FormControl>
         </Box>
-        {/* Photo Upload Section */}
+        {/* Photo Upload Section (Keep As Is - but still recommend fixing the upload method) */}
         <Box className="form-row" sx={{ alignItems: "center", mb: 2 }}>
           <Typography variant="body1" sx={{ mr: 2 }}>
             Upload Photo:
           </Typography>
           <Button variant="contained" component="label">
+            {" "}
             Choose File
             <input
               type="file"
@@ -411,16 +511,25 @@ const PatientHistoryForm = ({ open, onClose }) => {
             <Box sx={{ ml: 2, display: "flex", alignItems: "center" }}>
               <img
                 src={photo}
-                alt="Uploaded"
-                style={{ width: 40, height: 40, borderRadius: "50%" }}
+                alt="Preview"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
               />
-              <IconButton onClick={() => setPhoto("")}>
-                <DeleteIcon fontSize="small" />
+              <IconButton
+                onClick={() => setPhoto("")}
+                size="small"
+                aria-label="Remove photo"
+              >
+                <DeleteIcon fontSize="inherit" />
               </IconButton>
             </Box>
           )}
         </Box>
-        {/* Allergies Section */}
+        {/* Allergies Section (Keep As Is) */}
         <Typography variant="subtitle1" className="allergy-section">
           Allergies
         </Typography>
@@ -442,17 +551,20 @@ const PatientHistoryForm = ({ open, onClose }) => {
             value={allergies}
             onChange={(e) => setAllergies(e.target.value)}
             disabled={!allergic}
+            required={allergic}
           />
         </FormGroup>
-        {/* Past Medical History Section */}
+        {/* Past Medical History Section (Keep As Is) */}
         <Typography variant="subtitle1" className="medical-history-section">
           Past Medical History and Review of Systems
         </Typography>
         <Typography variant="body2" className="medical-history-subtitle">
-          (Please check off if you have had any problems with or are presently
+          (Please check if you have had any problems with or are presently
           experiencing any of the following)
         </Typography>
-        <Grid container spacing={2} className="medical-history-grid">
+        <Grid container spacing={1} className="medical-history-grid">
+          {" "}
+          {/* Reduced spacing */}
           {[
             "High blood pressure",
             "Diabetes",
@@ -502,25 +614,28 @@ const PatientHistoryForm = ({ open, onClose }) => {
             "Alcohol abuse",
             "Drug addiction",
             "Impotence or Erectile Dysfunction",
-          ].map((item, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+          ].map((item) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={item}>
+              {" "}
+              {/* Adjusted grid columns */}
               <FormControlLabel
                 control={
                   <Checkbox
-                    // Add these two props:
-                    checked={medicalHistory.includes(item)} // Control checked state
+                    checked={medicalHistory.includes(item)}
                     onChange={(event) =>
                       handleMedicalHistoryChange(event, item)
-                    } // Handle changes
+                    }
+                    size="small"
                   />
                 }
-                label={item}
-                className="nowrap-label" // Consider removing if labels wrap undesirably
+                label={<Typography variant="body2">{item}</Typography>} // Wrap label for better control
+                className="nowrap-label" // This class might need CSS adjustment
               />
             </Grid>
           ))}
         </Grid>
-        {/* WOMEN ONLY SECTION - conditionally rendered */}
+
+        {/* --- WOMEN ONLY SECTION --- */}
         {gender === "female" && (
           <>
             <Typography variant="subtitle1" className="women-only-title">
@@ -529,51 +644,132 @@ const PatientHistoryForm = ({ open, onClose }) => {
             <Typography variant="subtitle2" className="menstrual-periods-title">
               Menstrual Periods
             </Typography>
+
             <Box className="form-row">
-              <FormControl fullWidth className="period-type-select">
+              {/* Added Age Onset Field */}
+              <TextField
+                label="Age onset"
+                type="number"
+                className="small-field" // Ensure this class provides appropriate width
+                value={ageOnset}
+                onChange={(e) => setAgeOnset(e.target.value.replace(/\D/g, ""))} // Allow only digits
+                InputProps={{ inputProps: { min: 0, max: 100 } }} // Basic range validation
+                required
+              />
+              <FormControl fullWidth className="period-type-select" required>
                 <InputLabel>Period Type</InputLabel>
                 <Select
                   value={periodType}
                   label="Period Type"
                   onChange={(e) => setPeriodType(e.target.value)}
                 >
+                  <MenuItem value="">
+                    <em>---</em>
+                  </MenuItem>
                   <MenuItem value="regular">Regular</MenuItem>
                   <MenuItem value="irregular">Irregular</MenuItem>
                 </Select>
               </FormControl>
             </Box>
+
+            <Box className="form-row" sx={{ alignItems: "center" }}>
+              {" "}
+              {/* Align items vertically */}
+              <Typography
+                variant="body2"
+                className="inline-label"
+                sx={{ mr: 2 }}
+              >
+                Still having periods:
+              </Typography>
+              <RadioGroup
+                row
+                value={stillHavingPeriods}
+                onChange={(e) => setStillHavingPeriods(e.target.value)}
+              >
+                <FormControlLabel
+                  value="yes"
+                  control={<Radio size="small" />}
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value="no"
+                  control={<Radio size="small" />}
+                  label="No"
+                />
+              </RadioGroup>
+            </Box>
+
             <Box className="form-row">
+              {/* Show Last Period Date only if still having periods */}
               <TextField
                 label="Date of last period"
                 type="date"
                 className="medium-field"
-                value={lastPeriodDate} // Add this
-                onChange={(e) => setLastPeriodDate(e.target.value)} // Add this
+                value={lastPeriodDate}
+                onChange={(e) => setLastPeriodDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
+                disabled={stillHavingPeriods === "no"} // Disable if not having periods
+                required={stillHavingPeriods === "yes"} // Require only if having periods
               />
-              <FormControl fullWidth className="difficulty-select">
+              <FormControl fullWidth className="difficulty-select" required>
                 <InputLabel>Difficulty with periods</InputLabel>
                 <Select
                   value={difficultyWithPeriods}
                   label="Difficulty with periods"
                   onChange={(e) => setDifficultyWithPeriods(e.target.value)}
                 >
+                  <MenuItem value="">
+                    <em>---</em>
+                  </MenuItem>
                   <MenuItem value="no">No</MenuItem>
                   <MenuItem value="moderate">Moderate</MenuItem>
-                  <MenuItem value="yes">Yes</MenuItem>
+                  <MenuItem value="severe">Severe</MenuItem>{" "}
+                  {/* Changed 'yes' to 'severe' for clarity */}
                 </Select>
               </FormControl>
             </Box>
+
+            {/* Row for Pregnancies, Miscarriages, Abortions */}
             <Box className="form-row">
               <TextField
                 label="Pregnancies"
                 type="number"
                 className="small-field"
-                value={pregnancies} // Add this
-                onChange={(e) => setPregnancies(e.target.value)} // Add this
-                slotProps={{ htmlInput: { min: 0 } }} // Or inputProps depending on MUI version
+                required
+                value={pregnancies}
+                onChange={(e) =>
+                  setPregnancies(e.target.value.replace(/\D/g, ""))
+                }
+                InputProps={{ inputProps: { min: 0 } }}
+              />
+              {/* REMOVED Births Dropdown and Other Births Textfield */}
+              <TextField
+                label="Miscarriages"
+                type="number"
+                className="small-field"
+                required
+                value={miscarriages}
+                onChange={(e) =>
+                  setMiscarriages(e.target.value.replace(/\D/g, ""))
+                }
+                InputProps={{ inputProps: { min: 0 } }}
+              />
+              <TextField
+                label="Abortions"
+                type="number"
+                className="small-field"
+                required
+                value={abortions}
+                onChange={(e) =>
+                  setAbortions(e.target.value.replace(/\D/g, ""))
+                }
+                InputProps={{ inputProps: { min: 0 } }}
               />
             </Box>
+
+            {/* --- Radio Button Sections --- */}
+            {/* Leakage of urine */}
             <Box className="women-radio-row">
               <Typography variant="body2" className="inline-label">
                 Leakage of urine:
@@ -583,23 +779,29 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 value={leakageOfUrine}
                 onChange={(e) => setLeakageOfUrine(e.target.value)}
               >
-                <FormControlLabel value="no" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="no"
+                  control={<Radio size="small" />}
+                  label="No"
+                />
                 <FormControlLabel
                   value="yes"
-                  control={<Radio />}
-                  label="Yes (Please describe)"
+                  control={<Radio size="small" />}
+                  label="Yes"
                 />
               </RadioGroup>
               {leakageOfUrine === "yes" && (
                 <TextField
-                  label="Please describe"
+                  label="Please describe leakage"
                   multiline
                   className="yes-textfield"
                   value={leakageDescription}
                   onChange={(e) => setLeakageDescription(e.target.value)}
+                  required={leakageOfUrine === "yes"}
                 />
               )}
             </Box>
+            {/* Pelvic pain */}
             <Box className="women-radio-row">
               <Typography variant="body2" className="inline-label">
                 Pelvic pain:
@@ -609,23 +811,29 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 value={pelvicPain}
                 onChange={(e) => setPelvicPain(e.target.value)}
               >
-                <FormControlLabel value="no" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="no"
+                  control={<Radio size="small" />}
+                  label="No"
+                />
                 <FormControlLabel
                   value="yes"
-                  control={<Radio />}
-                  label="Yes (Please describe)"
+                  control={<Radio size="small" />}
+                  label="Yes"
                 />
               </RadioGroup>
               {pelvicPain === "yes" && (
                 <TextField
-                  label="Please describe"
+                  label="Please describe pelvic pain"
                   multiline
                   className="yes-textfield"
                   value={pelvicDescription}
                   onChange={(e) => setPelvicDescription(e.target.value)}
+                  required={pelvicPain === "yes"}
                 />
               )}
             </Box>
+            {/* Abnormal discharge */}
             <Box className="women-radio-row">
               <Typography variant="body2" className="inline-label">
                 Abnormal discharge:
@@ -635,25 +843,31 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 value={abnormalDischarge}
                 onChange={(e) => setAbnormalDischarge(e.target.value)}
               >
-                <FormControlLabel value="no" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="no"
+                  control={<Radio size="small" />}
+                  label="No"
+                />
                 <FormControlLabel
                   value="yes"
-                  control={<Radio />}
-                  label="Yes (Please describe)"
+                  control={<Radio size="small" />}
+                  label="Yes"
                 />
               </RadioGroup>
               {abnormalDischarge === "yes" && (
                 <TextField
-                  label="Please describe"
+                  label="Please describe discharge"
                   multiline
                   className="yes-textfield"
                   value={abnormalDischargeDescription}
                   onChange={(e) =>
                     setAbnormalDischargeDescription(e.target.value)
                   }
+                  required={abnormalDischarge === "yes"}
                 />
               )}
             </Box>
+            {/* Abnormal Pap Smear */}
             <Box className="women-radio-row">
               <Typography variant="body2" className="inline-label">
                 History of abnormal Pap Smear:
@@ -663,22 +877,27 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 value={abnormalPapSmear}
                 onChange={(e) => setAbnormalPapSmear(e.target.value)}
               >
-                <FormControlLabel value="no" control={<Radio />} label="No" />
+                <FormControlLabel
+                  value="no"
+                  control={<Radio size="small" />}
+                  label="No"
+                />
                 <FormControlLabel
                   value="yes"
-                  control={<Radio />}
-                  label="Yes (Please describe)"
+                  control={<Radio size="small" />}
+                  label="Yes"
                 />
               </RadioGroup>
               {abnormalPapSmear === "yes" && (
                 <TextField
-                  label="Please describe"
+                  label="Please describe abnormal Pap Smear"
                   multiline
                   className="yes-textfield"
                   value={abnormalPapSmearDescription}
                   onChange={(e) =>
                     setAbnormalPapSmearDescription(e.target.value)
                   }
+                  required={abnormalPapSmear === "yes"}
                 />
               )}
             </Box>

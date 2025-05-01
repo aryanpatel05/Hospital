@@ -43,12 +43,7 @@ const patientSchema = new mongoose.Schema(
         return this.gender === "female";
       },
     },
-    births: {
-      type: Number,
-      required: function () {
-        return this.gender === "female";
-      },
-    },
+
     miscarriages: {
       type: Number,
       required: function () {
