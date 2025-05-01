@@ -423,7 +423,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
             onChange={(e) => setSpouseName(e.target.value)}
             // Conditionally require spouse name if married?
             required={maritalStatus === "married"}
-            disabled={maritalStatus !== "married" && maritalStatus !== "widow"} // Example logic
           />
         </Box>
         <Box className="form-row">
