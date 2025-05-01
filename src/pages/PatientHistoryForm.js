@@ -530,7 +530,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
               Menstrual Periods
             </Typography>
             <Box className="form-row">
-              <TextField label="Age onset" className="small-field" />
               <FormControl fullWidth className="period-type-select">
                 <InputLabel>Period Type</InputLabel>
                 <Select
@@ -542,19 +541,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
                   <MenuItem value="irregular">Irregular</MenuItem>
                 </Select>
               </FormControl>
-            </Box>
-            <Box className="form-row">
-              <Typography variant="body2" className="inline-label">
-                Still having periods:
-              </Typography>
-              <RadioGroup
-                row
-                value={stillHavingPeriods}
-                onChange={(e) => setStillHavingPeriods(e.target.value)}
-              >
-                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                <FormControlLabel value="no" control={<Radio />} label="No" />
-              </RadioGroup>
             </Box>
             <Box className="form-row">
               <TextField
@@ -592,6 +578,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
                   label="Births"
                   onChange={(e) => setBirths(e.target.value)}
                 >
+                  <MenuItem value="none">None</MenuItem>
                   <MenuItem value="single">Single</MenuItem>
                   <MenuItem value="twins">Twins</MenuItem>
                   <MenuItem value="triplets">Triplets</MenuItem>
