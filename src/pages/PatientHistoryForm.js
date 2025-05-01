@@ -588,7 +588,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
                   <MenuItem value="other">Other</MenuItem>
                 </Select>
               </FormControl>
-              // Update conditional TextField
+
               {births === "other" && (
                 <TextField
                   label="Number of Births"
