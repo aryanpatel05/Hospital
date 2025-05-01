@@ -573,48 +573,6 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 onChange={(e) => setPregnancies(e.target.value)} // Add this
                 slotProps={{ htmlInput: { min: 0 } }} // Or inputProps depending on MUI version
               />
-              <FormControl fullWidth className="births-select">
-                <InputLabel>Births</InputLabel>
-                <Select
-                  value={births}
-                  label="Births"
-                  onChange={(e) => setBirths(e.target.value)}
-                >
-                  <MenuItem value="none">None</MenuItem>
-                  <MenuItem value="single">Single</MenuItem>
-                  <MenuItem value="twins">Twins</MenuItem>
-                  <MenuItem value="triplets">Triplets</MenuItem>
-                  <MenuItem value="quadruplets">Quadruplets</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </Select>
-              </FormControl>
-
-              {births === "other" && (
-                <TextField
-                  label="Number of Births"
-                  type="number"
-                  className="small-field"
-                  value={otherBirths} // Add this
-                  onChange={(e) => setOtherBirths(e.target.value)} // Add this
-                  slotProps={{ htmlInput: { min: 0 } }}
-                />
-              )}
-              <TextField
-                label="Miscarriages"
-                type="number"
-                className="small-field"
-                value={miscarriages} // Add this
-                onChange={(e) => setMiscarriages(e.target.value)} // Add this
-                slotProps={{ htmlInput: { min: 0 } }}
-              />
-              <TextField
-                label="Abortions"
-                type="number"
-                className="small-field"
-                value={abortions} // Add this
-                onChange={(e) => setAbortions(e.target.value)} // Add this
-                slotProps={{ htmlInput: { min: 0 } }}
-              />
             </Box>
             <Box className="women-radio-row">
               <Typography variant="body2" className="inline-label">
