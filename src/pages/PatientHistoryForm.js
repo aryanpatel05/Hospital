@@ -97,7 +97,7 @@ const PatientHistoryForm = ({ open, onClose }) => {
   const [otherBirths, setOtherBirths] = useState("");
   const [miscarriages, setMiscarriages] = useState("");
   const [abortions, setAbortions] = useState("");
-
+  const [lastPeriodDate, setLastPeriodDate] = useState("");
   // Description fields for women-only section
   const [leakageOfUrine, setLeakageOfUrine] = useState("no");
   const [leakageDescription, setLeakageDescription] = useState("");
@@ -547,6 +547,8 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 label="Date of last period"
                 type="date"
                 className="medium-field"
+                value={lastPeriodDate} // Add this
+                onChange={(e) => setLastPeriodDate(e.target.value)} // Add this
                 InputLabelProps={{ shrink: true }}
               />
               <FormControl fullWidth className="difficulty-select">
@@ -586,11 +588,14 @@ const PatientHistoryForm = ({ open, onClose }) => {
                   <MenuItem value="other">Other</MenuItem>
                 </Select>
               </FormControl>
+              // Update conditional TextField
               {births === "other" && (
                 <TextField
                   label="Number of Births"
                   type="number"
                   className="small-field"
+                  value={otherBirths} // Add this
+                  onChange={(e) => setOtherBirths(e.target.value)} // Add this
                   slotProps={{ htmlInput: { min: 0 } }}
                 />
               )}
@@ -598,12 +603,16 @@ const PatientHistoryForm = ({ open, onClose }) => {
                 label="Miscarriages"
                 type="number"
                 className="small-field"
+                value={miscarriages} // Add this
+                onChange={(e) => setMiscarriages(e.target.value)} // Add this
                 slotProps={{ htmlInput: { min: 0 } }}
               />
               <TextField
                 label="Abortions"
                 type="number"
                 className="small-field"
+                value={abortions} // Add this
+                onChange={(e) => setAbortions(e.target.value)} // Add this
                 slotProps={{ htmlInput: { min: 0 } }}
               />
             </Box>
