@@ -448,7 +448,7 @@ const PatientDetails = () => {
                   <Box className="info-item">
                     <Typography className="info-label">
                       <FamilyRestroomOutlinedIcon />
-                      Spouse Name
+                      Kin Name
                     </Typography>
                     <Typography className="info-value">
                       {getData(patient.spouseName)}
