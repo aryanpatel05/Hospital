@@ -12,7 +12,7 @@ const patientSchema = new mongoose.Schema(
       type: String,
       required: [true, "Marital Status is required"],
     },
-    spouseName: { type: String, required: [true, "Spouse Name is required"] },
+    spouseName: { type: String, required: false },
     age: { type: Number, required: [true, "Age is required"] },
     gender: { type: String, required: [true, "Gender is required"] },
     birthDate: { type: String, required: [true, "Birth Date is required"] },
